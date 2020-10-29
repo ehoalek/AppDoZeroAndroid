@@ -6,8 +6,10 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.fragment.app.FragmentActivity
 import androidx.navigation.findNavController
+import com.bumptech.glide.Glide
 import com.example.appdozero.R
 import com.example.appdozero.model.Pessoa
+import com.google.firebase.storage.FirebaseStorage
 
 class PessoaAdapter(
     private val activity: FragmentActivity,
@@ -24,8 +26,22 @@ class PessoaAdapter(
     override fun onBindViewHolder(holder: PessoaViewHolder, position: Int) {
 
         val pessoa = pessoas[position]
-        holder.idPessoa.text = pessoa.id.toString()
         holder.nomePessoa.text = pessoa.nome
+        holder.cpfPessoa.text = pessoa.cpf
+
+        val storage = FirebaseStorage.getInstance()
+        val storageReference = storage.getReference(pessoa.foto)
+        storageReference.downloadUrl.addOnSuccessListener { imageURL ->
+            Glide.with(activity)
+                .load(imageURL)
+                .into(holder.fotoPessoa)
+        }
+
+        storageReference.downloadUrl.addOnFailureListener{
+            Glide.with(activity)
+                .load(R.drawable.sem_foto)
+                .into(holder.fotoPessoa)
+        }
 
 
         holder.itemView.setOnClickListener { view ->
@@ -39,7 +55,7 @@ class PessoaAdapter(
                 .setTitle("Atenção")
                 .setMessage("Deseja excluir a pessoa?")
                     .setPositiveButton("sim"){ dialog, which ->
-                        viewModel.excluirPessoa(pessoa.id)
+                        viewModel.repository.excluirPessoa(pessoa.docId)
                     }
                     .setNegativeButton("nao", null)
                     .show()

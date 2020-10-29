@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "836277024042",
+    "firebase_url": "https://appdozero-efa69.firebaseio.com",
+    "project_id": "appdozero-efa69",
+    "storage_bucket": "appdozero-efa69.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:836277024042:android:f8cfd847eb17d8af46da53",
+        "android_client_info": {
+          "package_name": "com.example.appdozero"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "836277024042-02jl34pmtt3u8pgc3uqg05qqhljjvccc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDw5N_q8HZBS5PBKphq8-WSkL2F4IV3DnY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "836277024042-02jl34pmtt3u8pgc3uqg05qqhljjvccc.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

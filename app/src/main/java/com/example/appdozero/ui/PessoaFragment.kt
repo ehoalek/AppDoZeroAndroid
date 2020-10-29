@@ -8,8 +8,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
 import com.example.appdozero.R
+import com.example.appdozero.model.Pessoa
 import kotlinx.android.synthetic.main.pessoa_fragment.*
 
 class PessoaFragment : Fragment() {
@@ -23,19 +25,25 @@ class PessoaFragment : Fragment() {
 
 
         var view = inflater.inflate(R.layout.pessoa_fragment, container, false)
-        viewModel = ViewModelProvider(this).get(PessoaViewModel::class.java)
+        viewModel = ViewModelProvider(requireActivity()).get(PessoaViewModel::class.java)
 
         viewModel.pessoa.observe(viewLifecycleOwner, { pessoa ->
+
             txtNome.setText(pessoa.nome)
             txtCPF.setText(pessoa.cpf)
             txtAltura.setText(pessoa.altura.toString())
+            txtFoto.setText(pessoa.foto)
 
             view.findViewById<Button>(R.id.btnSalvar).setOnClickListener {
-                val nome = txtNome.text.toString()
-                val cpf = txtCPF.text.toString()
-                val altura = txtAltura.textString().toDouble()
+                val pessoa = Pessoa(
+                    docId = pessoa.docId,
+                    nome = txtNome.text.toString(),
+                    cpf = txtCPF.text.toString(),
+                    foto = txtFoto.text.toString(),
+                    altura = txtAltura.text.toString().toInt()
 
-                viewModel.salvarPessoa(Pessoa(id = pessoa.id, nome = nome, cpf = cpf, altura = altura))
+                )
+                viewModel.repository.salvarPessoa(pessoa)
                 findNavController().navigateUp()
             }
         })

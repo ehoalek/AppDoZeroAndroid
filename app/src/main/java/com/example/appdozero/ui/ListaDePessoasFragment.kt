@@ -8,34 +8,53 @@ import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
 import com.example.appdozero.R
 import com.example.appdozero.model.Pessoa
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import kotlinx.android.synthetic.main.pessoa_fragment.*
 
 
 class ListaDePessoasFragment : Fragment() {
 
+    private lateinit var viewModel: PessoaViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.lista_de_pessoas, container, false)
-        var recycler = view.findViewById<RecyclerView>(R.id.list)
-        var viewModel = ViewModelProvider(requireActivity()).get(PessoaViewModel::class.java)
 
-        viewModel.listaDePessoas.observe(requireActivity(), { pessoas ->
-            with(recycler){
-                adapter = PessoaAdapter(requireActivity(), viewModel, pessoas)
+
+        val view = inflater.inflate(R.layout.lista_de_pessoas, container, false)
+        viewModel = ViewModelProvider(requireActivity()).get(PessoaViewModel::class.java)
+
+        viewModel.pessoa.observe(viewLifecycleOwner, { pessoa ->
+
+            txtNome.setText(pessoa.nome)
+            txtCPF.setText(pessoa.cpf)
+            txtAltura.setText(pessoa.altura.toString())
+
+            view.findViewById<Button>(R.id.btnSalvar).setOnClickListener {
+
+                val nome: String = txtNome.text.toString()
+                val cpf: String = txtCPF.text.toString()
+                val altura: Double = txtAltura.text.toString().toDouble()
+
+                viewModel.salvarPessoa(
+                    Pessoa(
+                        id = pessoa.id,
+                        nome = nome,
+                        cpf = cpf,
+                        altura = altura
+                    )
+                )
+                findNavController().navigateUp()
             }
         })
-        view.findViewById<FloatingActionButton>(R.id.fab).setOnClickListener {
-            viewModel.pessoa.value = Pessoa()
-            findNavController().navigate(R.id.action_lista_para_detalhes_pessoa)
-        }
         return view
     }
-
 }

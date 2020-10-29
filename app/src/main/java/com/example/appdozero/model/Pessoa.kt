@@ -1,16 +1,14 @@
 package com.example.appdozero.model
 
-import androidx.room.Entity
-import androidx.room.PrimaryKey
 
-@Entity(tableName = "pessoas")
 data class Pessoa (
-    @PrimaryKey(autoGenerate = true)
-    var id : Int,
+
+    var docId : String,
     var nome : String,
     var cpf : String,
-    var altura : Double
+    var foto : String,
+    var altura : Int
 )
 {
-    constructor() : this(0, String(), String(), 0.0)
+    constructor() : this(String(), String(), String(), String(),0)
 }
